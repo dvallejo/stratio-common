@@ -295,5 +295,34 @@ To set a monitor and subscribe it to our silly actor heartbeats you can just do 
   
 `testActor` will receive `HeartbeatLost(fallenId)` when the by-that-id identified service has stopped its heartbeat.
 
+Macros
+====================
+
+@LogFunction
+------------------------------------------------
+This macro annotation provides a mechanism to log a method call. It changes the method definition in order to
+send a trace log message with the name of the method and the value of its arguments. It's necessary to have a logger 
+value defined in the scope of the method.
+
+An example here:
+
+```scala
+
+trait Example extends LazyLogging {
+  @LogFunction
+  def foo(a: String, b: Int): String = a + b.toString
+}
+```
+
+The method definition, after the macro execution (in compile time) will be:
+
+```scala
+def foo(a: String, b: Int): String = {
+  logger.trace(s"Calling foo method with arguments a: $a, b: $b")
+  a + b.toString
+}
+```
+
+This work is in progress. Now, it's not working with method without arguments.
 
   
